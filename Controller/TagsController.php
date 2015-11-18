@@ -47,6 +47,27 @@ class TagsController extends TagsAppController {
 	);
 
 /**
+ * Ajaxlist action
+ *
+ * @return void
+ */
+	public function ajaxlist() {
+		$this->autoRender = false;
+		$this->{$this->modelClass}->recursive = 0;
+		$options = array('fields'=>array('Tag.id','Tag.name','Tag.keyname'),'conditions'=>array('Tag.name LIKE' => '%'.$this->request->query['term'].'%'));
+		$tags = $this->Tag->find('all',$options);
+		$x = 0;
+		$data = array();
+		foreach($tags as $tag){
+			$data[$x]['id'] = trim($tag['Tag']['id']);
+			$data[$x]['name'] = trim($tag['Tag']['name']);
+			$data[$x]['value'] = trim($tag['Tag']['keyname']);
+			$x++;
+		}
+		echo json_encode($data);
+	}
+
+/**
  * Index action
  *
  * @return void
@@ -62,13 +83,76 @@ class TagsController extends TagsAppController {
  * @param string $keyName Tag key name
  * @return void
  */
-	public function view($keyName = null) {
-		try {
-			$this->set('tag', $this->{$this->modelClass}->view($keyName));
-		} catch (Exception $e) {
-			$this->Session->setFlash($e->getMessage());
-			$this->redirect('/');
+	public function view($keyname = null) {
+		if(empty($keyname)){
+			$keyname = $this->request->params['keyname'];
 		}
+		//try {
+			$this->set('tag', $this->{$this->modelClass}->find('first',array(
+				'contain'=>array('Tagged'),
+				'conditions'=>array('Tag.keyname'=>$keyname)
+				)));
+			$articles = $this->Tag->Tagged->find('tagged', array(
+				'contain'=>array('Tag','Article.User'),
+				'by' => $keyname,
+				'model' => 'Article'));
+			$x = 0;
+			foreach($articles as $article){
+				$articles[$x]['Article'] = $article['Article']['Article'];
+				$articles[$x]['User'] = $article['Article']['Article']['User'];
+				unset($articles[$x]['Article']['User']);
+				$x++;
+			}
+			$this->set('articles', $articles);
+            
+            $tvs = $this->Tag->Tagged->find('tagged', array(
+                'contain'=>array('Tag','TV'),
+                'by' => $keyname,
+                'model' => 'TV'));
+            $x = 0;
+            foreach($tvs as $tv){
+                //$tvs[$x]['Tv'] = $tv['Tv']['Tv'];
+                $x++;
+            }
+            $this->set('tvs', $tvs);
+            
+            $events = $this->Tag->Tagged->find('tagged', array(
+                'contain'=>array('Tag','Event', 'Event.Genre', 'Event.Venue'),
+                'by' => $keyname,
+                'model' => 'Event'));
+                
+            $x = 0;
+            foreach($events as $event){
+                $events[$x]['Event'] = $event['Event']['Event'];
+                $events[$x]['Genre'] = $event['Event']['Event']['Genre'];
+                $events[$x]['Venue'] = $event['Event']['Event']['Venue'];
+                unset($events[$x]['Event']['Genre']);
+                unset($events[$x]['Event']['Venue']);
+                $x++;
+            }
+            
+            $this->set('events', $events);
+            
+            $competitions = $this->Tag->Tagged->find('tagged', array(
+                'contain'=>array('Tag','Competition'),
+                'by' => $keyname,
+                'model' => 'Competition'));
+           
+           $x = 0;
+            foreach($competitions as $competition){
+                $competitions[$x]['Competition'] = $competition['Competition'];
+                $x++;
+            }
+            
+            $this->set('competitions', $competitions);
+            
+            //echo "<pre>";
+            //print_r($events);
+            //echo "</pre>";
+		//} catch (Exception $e) {
+		//	$this->Session->setFlash($e->getMessage());
+		//	$this->redirect('/');
+		//}
 	}
 
 /**
