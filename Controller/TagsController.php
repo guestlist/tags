@@ -46,6 +46,8 @@ class TagsController extends TagsAppController {
 		'Html', 'Form'
 	);
 
+	public $paginate = array();
+
 /**
  * Ajaxlist action
  *
@@ -92,10 +94,21 @@ class TagsController extends TagsAppController {
 				'contain'=>array('Tagged'),
 				'conditions'=>array('Tag.keyname'=>$keyname)
 				)));
-			$articles = $this->Tag->Tagged->find('tagged', array(
+			//$articles = $this->Tag->Tagged->find('tagged', array(
+			//	'contain'=>array('Tag','Article.User'),
+			//	'by' => $keyname,
+			//	'model' => 'Article'));
+
+            $this->paginate['Tagged'] = array(
+				'paramType' => 'querystring',
 				'contain'=>array('Tag','Article.User'),
-				'by' => $keyname,
-				'model' => 'Article'));
+                'model' => 'Article',
+                'tagged',
+                'by' => $keyname,
+                );
+            $this->Paginator->settings = $this->paginate;
+            $articles = $this->Paginator->paginate('Tagged');
+
 			$x = 0;
 			foreach($articles as $article){
 				$articles[$x]['Article'] = $article['Article']['Article'];
@@ -106,12 +119,15 @@ class TagsController extends TagsAppController {
 			$this->set('articles', $articles);
             
             $tvs = $this->Tag->Tagged->find('tagged', array(
-                'contain'=>array('Tag','TV'),
+                'contain'=>array('Tag','Tv.Channel'),
                 'by' => $keyname,
-                'model' => 'TV'));
+                'model' => 'Tv'));
             $x = 0;
+
             foreach($tvs as $tv){
-                //$tvs[$x]['Tv'] = $tv['Tv']['Tv'];
+                $tvs[$x]['Tv'] = $tv['Tv']['Tv'];
+				$tvs[$x]['Channel'] = $tv['Tv']['Tv']['Channel'];
+				unset($tvs[$x]['Tv']['Channel']);
                 $x++;
             }
             $this->set('tvs', $tvs);
@@ -138,8 +154,8 @@ class TagsController extends TagsAppController {
                 'by' => $keyname,
                 'model' => 'Competition'));
            
-           $x = 0;
-            foreach($competitions as $competition){
+			$x = 0;
+			foreach($competitions as $competition){
                 $competitions[$x]['Competition'] = $competition['Competition'];
                 $x++;
             }

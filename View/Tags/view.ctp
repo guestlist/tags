@@ -1,7 +1,3 @@
-<?php echo("<pre>"); ?>
-<?php //print_r($events); ?>
-<?php echo("</pre>"); ?>
-
 <?php
 	echo $this->Html->script('http://0.static.newspaper.guestlistmedia.net/js/lib/jquery-1.10.1.min.js', array('inline' => false));
 	echo $this->Html->script('newhome/menu_effect', array('inline' => false));
@@ -109,25 +105,32 @@
 					<div class="loading-section">
 						<div class="loading"></div>
 					</div>
+					<?php if(!empty($articles)){ ?>
 					<div id="articles" class="news-mainsection genresection">
 						<!-- MAINSECTION 1 -->
 						<?php echo $this->element('new_design/articles/indexBox',array('articles'=>$articles)); ?>
 						
 					</div>
+					<?php } ?>
+					<?php if(!empty($videos)){ ?>
 					<div class="genre-videos col-md-12">
-						<?php if((!empty($channelSlug))&&($channelSlug=='london-news')){ ?>
-						<?php } else { ?>
-						<?php echo $this->element('new_design/videos/tag_view') ?>
-						<?php } ?>
+						<?php echo $this->element('eventsTagBox'); ?>
 					</div>
+					<?php } ?>
 				</div> <!-- end row -->
 			</div>
 			<!-- NEWS LEFTSIDE END -->
 			<!-- NEWS RIGHTSIDE -->
 			<div class="col-md-4 col-sm-12 news-menu-right genre-menu-right">
-			<?php echo $this->element('eventsTagBox'); ?>
-			
-			<?php echo $this->element('competitionsTagBox'); ?>
+			<?php
+			if(!empty($tvs)) {
+				//echo $this->element('new_design/videos/tag_view');
+				echo $this->element('tvs/tvBox');
+			}
+			?>
+			<?php if(!empty($competitions)){
+				echo $this->element('competitionsTagBox');
+			} ?>
 			</div>
 		</div>
 	</div>
