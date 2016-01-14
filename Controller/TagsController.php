@@ -101,7 +101,7 @@ class TagsController extends TagsAppController {
 
             $this->paginate['Tagged'] = array(
 				'paramType' => 'querystring',
-				'contain'=>array('Tag','Article.User'),
+				'contain'=>array('Tag','Article.User','Article.Channel'),
                 'model' => 'Article',
                 'tagged',
                 'by' => $keyname,
@@ -112,8 +112,10 @@ class TagsController extends TagsAppController {
 			$x = 0;
 			foreach($articles as $article){
 				$articles[$x]['Article'] = $article['Article']['Article'];
+				$articles[$x]['Channel'] = $article['Article']['Article']['Channel'];
 				$articles[$x]['User'] = $article['Article']['Article']['User'];
 				unset($articles[$x]['Article']['User']);
+				unset($articles[$x]['Article']['Channel']);
 				$x++;
 			}
 			$this->set('articles', $articles);
