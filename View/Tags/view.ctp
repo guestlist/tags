@@ -8,94 +8,36 @@
 	echo $this->Html->css('owl_carousel/owl.theme', array('inline' => false));
 	echo $this->Html->css('owl_carousel/owl.transitions', array('inline' => false));
 ?>
-<script type="text/javascript">
-	$( document ).ready(function() {
-		 $('html, body').animate({
-			scrollTop: $(".musicMenu").offset().top + 100
-		}, 500);
-	});
-</script>
-<div id="player">
-</div>
-	<!-- EVENTS
-	<div class="account-container">
-		<?php //echo $this->element('new_design/event_app',array('events' => $events )); ?>
-	</div>
-	-->
-	<!--
-	<div class="event-container">
-		<div class="event-header">
-			<h2><a href="/events">UPCOMING EVENTS</a></a></h2>
-			<h2><a href="/events">SEE ALL EVENTS</a></h2>
-		</div>
-		<?php $x=0; ?>
-		<?php
-		if($x!=0){
-		}
-		else{
-		}
-		?>
-		<?php foreach($events as $event):?>
-		<a href="/london/clubs/<?php echo $event['Venue']['slug']?>/event/<?php echo $event['Event']['id']?>/<?php echo $event['Event']['slug']?>">
-				<?php
-		if($x!=3){?>
-			<div class="event-thumb event-thumb-margin">
-		<?php }
-		else{ ?>
-			<div class="event-thumb">
-		<?php } ?>
-				<div class="img-background">
-					<img src="<?php echo $this->Pic->getEventImagePath($event['Event']['id'], $event['Event']['created'], 'medium'); ?>" alt="read news" width="367" />
-					<div class="event-hover">
-						<h3>MORE</h3>
-					</div>
-				</div>
-				<div class="event-text">
-					<h3><?php echo $event['Event']['name']?></h3>
-					<p><?php echo $event['Venue']['name']?></p>
-				</div>
-			</div>
-		</a>
-		<?php $x++;
-		endforeach; ?>
-	</div>
-	-->
-	<!-- EVENTS END -->
-	<!-- GENRES -->
-	<div class="container article-container">
-		<div id="owl-demo" class="owl-carousel owl-theme">
-		  <div class="item"><a href="/house/"><span>house</span></a></div>
-		  <div class="item"><a href="/rnb-hiphop/"><span>hip-hop &amp; rnb</span></a></div>
-		  <div class="item"><a href="/drum-bass/"><span>drum &amp; bass</span></a></div>
-		  <div class="item"><a href="/indie/"><span>indie</span></a></div>
-		  <div class="item"><a href="/reggae/"><span>reggae</span></a></div>
-		  <div class="item"><a href="/other/"><span>the other side</span></a></div>
-		</div>
-		
-		
-		<div class="row content"><!-- hidden-xs commented out, why was it in there?? -->
 
-			<div class="musicMenu musicHome">
-			  <nav>
-				<ul class="musicHomeBlocks">
-				  <li><a href="/house/"><span data-hover="house">house</span></a></li>
-				  <li><a href="/rnb-hiphop/"><span data-hover="hiphop &amp; rnb">hip-hop &amp; rnb</span></a></li>
-				  <li><a href="/drum-bass/"><span data-hover="drum &amp; bass">drum &amp; bass</span></a></li>
-				  <li><a href="/indie/"><span data-hover="indie">indie</span></a></li>
-				  <li><a href="/reggae/"><span data-hover="reggae">reggae</span></a></li>
-				 <li><a href="/other/"><span data-hover="the other side">the<br>other<br>side</span></a></li>
-				</ul>
-			  </nav>
-			</div>
-			<!-- GENRES END-->
-		</div>
-	</div> <!-- END OF CONTAINER -->
-	
 	<div class="container">
-	
+		<div class="col-md-12 turning-blocks">
+			<!-- GENRES -->
+			<div class="mobile-owl-demo" style="display:none">
+				<div id="owl-demo" class="owl-carousel owl-theme">
+				  <div class="item"><a href="/house"><span>house</span></a></div>
+				  <div class="item"><a href="/rnb-hiphop"><span>hip-hop &amp; rnb</span></a></div>
+				  <div class="item"><a href="/drum-bass"><span>drum &amp; bass</span></a></div>
+				  <div class="item"><a href="/indie"><span>indie</span></a></div>
+				  <div class="item"><a href="/reggae"><span>reggae</span></a></div>
+				  <div class="item"><a href="/other"><span>the other side</span></a></div>
+				</div>
+			</div>
+			<!--<div class="musicMenu musicHome">
+				<nav>
+					<ul class="musicHomeBlocks">
+						<li><a href="/house"><span data-hover="house">house</span></a></li>
+						<li><a href="/rnb-hiphop"><span data-hover="hiphop &amp; rnb">hip-hop &amp; rnb</span></a></li>
+						<li><a href="/drum-bass"><span data-hover="drum &amp; bass">drum &amp; bass</span></a></li>
+						<li><a href="/indie"><span data-hover="indie">indie</span></a></li>
+						<li><a href="/reggae"><span data-hover="reggae">reggae</span></a></li>
+						<li><a href="/other"><span data-hover="the&nbsp;&nbsp; other&nbsp;&nbsp;&nbsp; side&nbsp;&nbsp;">the<br>other</br>side</span></a></li>
+					</ul>
+				</nav>
+			</div>-->
+		</div>
             
 		<!-- NEWS -->
-		<h1 style="color: #FFF; margin-bottom: 15px;"><?php echo $tag['Tag']['name']; ?></h1>
+		<h1><?php echo $tag['Tag']['name']; ?></h1>
 		<div class="row content news-container">
 			<!-- NEWS LEFTSIDE -->
 			<div class="col-md-8 col-sm-12 news-leftside">
@@ -529,11 +471,15 @@ $('#newLogin').bind('click', function() {
 		$('.friends-guestlist').removeClass('arrow');
 	});
 </script>
-<script>
+<?php
+$this->Html->scriptStart(array('block'=>'scriptBottom'));
+?>
 	$(document).ready(function() {
  
   var owl = $("#owl-demo");
- 
+  $(".mobile-owl-demo").fadeIn("slow");
+
+
   owl.owlCarousel({
       items : 6, //10 items above 1000px browser width
       itemsDesktop : [1000,6], //5 items between 1000px and 901px
@@ -555,8 +501,7 @@ $('#newLogin').bind('click', function() {
   $(".stop").click(function(){
     owl.trigger('owl.stop');
   })
-  
-  $('#paging').hide();
  
 });
-</script>
+<?php
+$this->Html->scriptEnd();
