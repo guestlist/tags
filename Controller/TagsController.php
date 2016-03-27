@@ -100,6 +100,7 @@ class TagsController extends TagsAppController {
 			//	'model' => 'Article'));
 
             $this->paginate['Tagged'] = array(
+            	'order' => 'created DESC',
 				'paramType' => 'querystring',
 				'contain'=>array('Tag','Article.User','Article.Channel'),
                 'model' => 'Article',
