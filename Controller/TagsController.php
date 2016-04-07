@@ -103,6 +103,7 @@ class TagsController extends TagsAppController {
             	'order' => 'created DESC',
 				'paramType' => 'querystring',
 				'contain'=>array('Tag','Article.User','Article.Channel'),
+				'conditions'=>array('Article.approved'=>1,'Article.alwaysvisible'=>1),
                 'model' => 'Article',
                 'tagged',
                 'by' => $keyname,
