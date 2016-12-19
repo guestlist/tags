@@ -1,5 +1,5 @@
 <?php
-	echo $this->Html->script('http://0.static.newspaper.guestlistmedia.net/js/lib/jquery-1.10.1.min.js', array('inline' => false));
+	echo $this->Html->script('http://0.static.newspaper.guestlist.net/js/lib/jquery-1.10.1.min.js', array('inline' => false));
 	echo $this->Html->script('newhome/menu_effect', array('inline' => false));
 	echo $this->Html->script('newhome/slide-effect', array('inline' => false));
 	echo $this->Html->script('newhome/twitter', array('inline' => false));
